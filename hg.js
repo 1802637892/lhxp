@@ -30,7 +30,7 @@ async function getTabs() {
         tagList.forEach((e) => {
             list.push({
                 name: e.type_name,
-                ui:1
+                ui:1,
                 ext: {
                     id: e.type_id,
                 },
