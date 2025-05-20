@@ -1,4 +1,4 @@
-﻿
+
 const CryptoJS = createCryptoJS()
 
 let headers = {
@@ -8,7 +8,7 @@ let headers = {
 }
 
 let appConfig = {
-    ver: 20250511,
+    ver: 1,
     title: '乐播',
     site: 'https://lbapi9.com',
 }
@@ -30,7 +30,7 @@ async function getTabs() {
         tagList.forEach((e) => {
             list.push({
                 name: e.type_name,
-                ui:1
+                ui:1,
                 ext: {
                     id: e.type_id,
                 },
