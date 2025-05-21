@@ -9,8 +9,8 @@ let headers = {
 
 let appConfig = {
     ver: 20250511,
-    title: '黄瓜',
-    site: 'https://apiyutu.com/',
+    title: '大地',
+    site: 'https://dadiapi.com/',
 }
 
 async function getConfig() {
