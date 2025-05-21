@@ -9,8 +9,8 @@ let headers = {
 
 let appConfig = {
     ver: 20250511,
-    title: '老鸭',
-    site: 'https://api.apilyzy.com/',
+    title: '番号',
+    site: 'http://fhapi9.com/',
 }
 
 async function getConfig() {
