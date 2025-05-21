@@ -10,7 +10,7 @@ let headers = {
 let appConfig = {
     ver: 20250511,
     title: '黄瓜',
-    site: 'https://apiyutu.com/',
+    site: 'https://www.avre00.com',
 }
 
 async function getConfig() {
