@@ -1,4 +1,4 @@
-﻿
+
 const CryptoJS = createCryptoJS()
 
 let headers = {
@@ -9,7 +9,7 @@ let headers = {
 
 let appConfig = {
     ver: 20250511,
-    title: '乐播',
+    title: '黄瓜',
     site: 'https://apiyutu.com/',
 }
 
@@ -122,7 +122,10 @@ async function getTracks(ext) {
         for (const element of playlist.list) {
 
             let name = element.vod_name
-            let id = element.vod_play_url.substr(5)
+          //  let id = element.vod_play_url.substr(5)
+            let id = element.vod_play_url.replace(/.*\$/ ,"");
+
+
             tracks.push({
                 name: name,
                 pan: '',
@@ -189,6 +192,7 @@ async function search(ext) {
             vod_id: String(e.vod_id),
             vod_name: e.vod_name,
             vod_pic: e.vod_pic,
+            // vod_remarks: `更新至 ${e.totalEpisode}`,
             ext: {
                 id: String(e.vod_id),
                 typeId: String(e.vod_id),
