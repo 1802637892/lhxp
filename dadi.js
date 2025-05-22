@@ -23,7 +23,7 @@ async function getConfig() {
 async function getTabs() {
     try {
         let list = []
-        let url = appConfig.site + `/api.php/provide/vod`
+        let url = appConfig.site
 
         const { data } = await $fetch.get(url)
         const tagList = JSON.parse(data).class
@@ -49,7 +49,7 @@ async function getCards(ext) {
     let { id, page = 1 } = ext
 
 
-    const url = appConfig.site + `/api.php/provide/vod/`
+    const url = appConfig.site
 
 
 
@@ -99,7 +99,7 @@ async function getTracks(ext) {
 
 
     // get playerList
-    const url = appConfig.site + `/api.php/provide/vod/`
+    const url = appConfig.site
 
     const header = headers
     header['content-type'] = 'application/json'
@@ -172,7 +172,7 @@ async function search(ext) {
     let cards = []
 
     const page = ext.page || 1
-    const url = `${appConfig.site}/api.php/provide/vod/`
+    const url = `${appConfig.site}`
     let body = {
 
         wd: ext.text,
