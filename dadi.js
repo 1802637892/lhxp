@@ -10,7 +10,7 @@ let headers = {
 let appConfig = {
     ver: 20250511,
     title: '大地',
-    site: 'https://dadiapi.com/',
+    site: 'https://dadiapi.com/feifei2/',
 }
 
 async function getConfig() {
