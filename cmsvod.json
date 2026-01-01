@@ -8,15 +8,16 @@
             "ext": "https://raw.githubusercontent.com/1802637892/lhxp/refs/heads/main/lsp.js"
         },
         {
-            "name": "看av",
+            "name": "肉视频",
             "type": 3,
-            "api": "csp_kav",
-            "ext": "https://raw.githubusercontent.com/1802637892/lhxp/refs/heads/main/kav.js"
+            "api": "csprsp",
+            "ext": "https://raw.githubusercontent.com/1802637892/lhxp/refs/heads/main/rsp.js"
         }
     ]
     
 
 }
+
 
 
 
