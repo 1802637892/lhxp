@@ -1,206 +1,172 @@
-//来自“夢”
-const cheerio = createCheerio();
-const CryptoJS = createCryptoJS();
+//来自群友“tou tie”
+const cheerio = createCheerio()
 
-const UA =
-  'Mozilla/5.0 (iPhone; CPU iPhone OS 18_2_1 like Mac OS X)AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1';
+// 设置User Agent，模拟iPhone浏览器
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0'
 
 let appConfig = {
-  ver: 1,
-  title: 'KanAV',
-  site: 'https://kanav.info',
-  tabs: [
-    {
-      name: '中文字幕',
-      ui: 1,
-      ext: {
-        id: 1,
-      },
-    },
-    {
-      name: '日韩有码',
-      ui: 1,
-      ext: {
-        id: 2,
-      },
-    },
-    {
-      name: '日韩无码',
-      ui: 1,
-      ext: {
-        id: 3,
-      },
-    },
-    {
-      name: '国产AV',
-      ui: 1,
-      ext: {
-        id: 4,
-      },
-    },
-    {
-      name: '自拍泄密',
-      ui: 1,
-      ext: {
-        id: 30,
-      },
-    },
-    {
-      name: '探花约炮',
-      ui: 1,
-      ext: {
-        id: 31,
-      },
-    },
-    {
-      name: '主播录制',
-      ui: 1,
-      ext: {
-        id: 32,
-      },
-    },
-    {
-      name: '动漫番剧',
-      ui: 1,
-      ext: {
-        id: 20,
-      },
-    },
-  ],
-};
+    ver: 1,
+    title: '肉视频',
+    site: 'https://rou.video',
+    tabs: [
+        {
+            name: '國產AV',
+            ui: 1,
+            ext: {
+                url: 'https://rou.video/t/國產AV',
+            },
+        },
+        {
+            name: '探花',
+            ui: 1,
+            ext: {
+                url: 'https://rou.video/t/探花',
+            },
+        },
+        {
+            name: '自拍流出',
+            ui: 1,
+            ext: {
+                url: 'https://rou.video/t/自拍流出',
+            },
+        },
+        {
+            name: 'OnlyFans',
+            ui: 1,
+            ext: {
+                url: 'https://rou.video/t/OnlyFans',
+            },
+        },
+        {
+            name: '日本',
+            ui: 1,
+            ext: {
+                url: 'https://rou.video/t/日本',
+            },
+        },
+    ],
+}
 
 async function getConfig() {
-  return JSON.stringify(appConfig);
+    let config = appConfig
+    return jsonify(config)
 }
 
 async function getCards(ext) {
-  let cards = [];
-  let { id, page = 1 } = JSON.parse(ext);
+    ext = argsify(ext)
+    let cards = []
+    let { page = 1, url } = ext
 
-  let url = `${appConfig.site}/index.php/vod/type/id/${id}/page/${page}.html`;
+    if (page > 1) {
+        url += `?order=createdAt&page=${page}`
+    }
 
-  const { data } = await $fetch.get(url, {
-    headers: {
-      'User-Agent': UA,
-    },
-  });
+    const { data } = await $fetch.get(url, {
+        headers: {
+            'User-Agent': UA,
+        },
+    })
 
-  const $ = cheerio.load(data);
+    const $ = cheerio.load(data)
 
-  $('.post-list .col-md-3').each((_, element) => {
-    const videoItem = $(element).find('.video-item');
-    const entryTitle = $(element).find('.entry-title');
-    const vodUrl = entryTitle.find('a').attr('href');
-    const vodPic = videoItem.find('.featured-content-image a img').attr('data-original');
-    const vodName = entryTitle.find('a').text().trim();
-    const remark = videoItem.find('span.model-view-left').text().trim();
-    const duration = videoItem.find('span.model-view').text().trim();
-    const fullText = entryTitle.text().trim();
-    const pubdate = fullText.replace(vodName, '').trim();
+    $('.grid.grid-cols-2.mb-6 > div').each((_, element) => {
+        if ($(element).find('.relative').length == 0) return
+        const href = $(element).find('.relative a').attr('href')
+        const title = $(element).find('img:last').attr('alt')
+        const cover = $(element).find('img').attr('src')
+        const subTitle = $(element).find('.relative a > div:eq(1)').text()
+        const hdinfo = $(element).find('.relative a > div:first').text()
+        cards.push({
+            vod_id: href,
+            vod_name: title,
+            vod_pic: cover,
+            vod_remarks: subTitle || hdinfo,
+            ext: {
+                url: appConfig.site + href,
+            },
+        })
+    })
 
-    cards.push({
-      vod_id: vodUrl,
-      vod_name: vodName,
-      vod_pic: vodPic,
-      vod_remarks: remark,
-      vod_duration: duration,
-      vod_pubdate: pubdate,
-      ext: {
-        url: `${appConfig.site}${vodUrl}`,
-      },
-    });
-  });
-
-  return JSON.stringify({
-    list: cards,
-  });
+    return jsonify({
+        list: cards,
+    })
 }
 
 async function getTracks(ext) {
-  let list = [];
-  let url = JSON.parse(ext).url;
+    ext = argsify(ext)
+    let tracks = []
+    let url = ext.url.match(/https?:\/\/rou\.video\/v\/(\w+)/)[1]
+    let playUrl = `https://rou.video/api/v/${url}`
+    tracks.push({
+        name: '播放',
+        pan: '',
+        ext: {
+            url: playUrl,
+        },
+    })
 
-  const { data } = await $fetch.get(url, {
-    headers: {
-      'User-Agent': UA,
-    },
-  });
-
-  let tracks = [];
-  list = [
-    {
-      title: '默认分组',
-      tracks,
-    },
-  ];
-
-  const $ = cheerio.load(data);
-  const player = $('script:contains(player_aaaa)')
-    .text()
-    .replace('var player_aaaa=', '');
-  const encodedUrl = JSON.parse(player).url;
-  const base64Decoded = CryptoJS.enc.Base64.parse(encodedUrl).toString(CryptoJS.enc.Utf8);
-  const decodedUrl = decodeURIComponent(base64Decoded);
-
-  tracks.push({
-    name: '播放',
-    ext: {
-      url: decodedUrl,
-    },
-  });
-
-  return JSON.stringify({
-    list: list,
-  });
+    return jsonify({
+        list: [
+            {
+                title: '默认分组',
+                tracks,
+            },
+        ],
+    })
 }
 
 async function getPlayinfo(ext) {
-  const playUrl = JSON.parse(ext).url;
-$utils.toastInfo(playUrl)
-  return JSON.stringify({ urls: [playUrl] });
+    ext = argsify(ext)
+    const url = ext.url
+    const { data } = await $fetch.get(url, {
+        headers: {
+            'User-Agent': UA,
+        },
+    })
+    const reslut = argsify(data)
+
+    const playurl = reslut.video.videoUrl
+
+  $utils.toastInfo(playurl)
+
+    return jsonify({ urls: [playurl], headers: [{ 'User-Agent': UA }] })
 }
 
 async function search(ext) {
-  ext = JSON.parse(ext);
-  let cards = [];
+    ext = argsify(ext)
+    let cards = []
 
-  let text = encodeURIComponent(ext.text);
-  let page = ext.page || 1;
-  let url = `${appConfig.site}/index.php/vod/search/by/time_add/page/${page}/wd/${text}.html`;
+    let text = encodeURIComponent(ext.text)
+    let page = ext.page || 1
+    let url = `${appConfig.site}/search?q=${text}&t=&page=${page}`
 
-  const { data } = await $fetch.get(url, {
-    headers: {
-      'User-Agent': UA,
-    },
-  });
+    const { data } = await $fetch.get(url, {
+        headers: {
+            'User-Agent': UA,
+        },
+    })
 
-  const $ = cheerio.load(data);
+    const $ = cheerio.load(data)
 
-  $('.post-list .col-md-3').each((_, element) => {
-    const videoItem = $(element).find('.video-item');
-    const entryTitle = $(element).find('.entry-title');
-    const vodUrl = entryTitle.find('a').attr('href');
-    const vodPic = videoItem.find('.featured-content-image a img').attr('data-original');
-    const vodName = entryTitle.find('a').text().trim();
-    const remark = videoItem.find('span.model-view-left').text().trim();
-    const duration = videoItem.find('span.model-view').text().trim();
-    const fullText = entryTitle.text().trim();
-    const pubdate = fullText.replace(vodName, '').trim();
+    $('.grid.grid-cols-2.mb-6 > div').each((_, element) => {
+        if ($(element).find('.relative').length == 0) return
+        const href = $(element).find('.relative a').attr('href')
+        const title = $(element).find('img:last').attr('alt')
+        const cover = $(element).find('img').attr('src')
+        const subTitle = $(element).find('.relative a > div:eq(1)').text()
+        const hdinfo = $(element).find('.relative a > div:first').text()
+        cards.push({
+            vod_id: href,
+            vod_name: title,
+            vod_pic: cover,
+            vod_remarks: subTitle || hdinfo,
+            ext: {
+                url: appConfig.site + href,
+            },
+        })
+    })
 
-    cards.push({
-      vod_id: vodUrl,
-      vod_name: vodName,
-      vod_pic: vodPic,
-      vod_remarks: remark,
-      vod_duration: duration,
-      vod_pubdate: pubdate,
-      ext: {
-        url: `${appConfig.site}${vodUrl}`,
-      },
-    });
-  });
-
-  return JSON.stringify({
-    list: cards,
-  });
+    return jsonify({
+        list: cards,
+    })
 }
