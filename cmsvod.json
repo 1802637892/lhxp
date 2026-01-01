@@ -1,10 +1,21 @@
 {
+
     "sites": [
         {
             "name": "大地",
             "type": 3,
             "api": "csp_dadi",
             "ext": "https://raw.githubusercontent.com/1802637892/lhxp/refs/heads/main/lsp.js"
+        },
+        {
+            "name": "看av",
+            "type": 3,
+            "api": "kav",
+            "ext": "https://raw.githubusercontent.com/1802637892/lhxp/refs/heads/main/kav.js"
         }
     ]
+    
+
 }
+
+
