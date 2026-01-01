@@ -155,6 +155,8 @@ async function getTracks(ext) {
 }
 
 async function getPlayinfo(ext) {
+
+  $utils.toastInfo(JSON.parse(ext).url);
   const playUrl = JSON.parse(ext).url;
 
   return JSON.stringify({ urls: [playUrl] });
