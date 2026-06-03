@@ -34,7 +34,7 @@ let appConfig = {
             ext: {
                 type: 'uncensored',
             },
-            ui: 2,
+            ui: 1,
         },
         {
             name: '有码',
