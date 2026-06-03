@@ -13,35 +13,35 @@ let appConfig = {
             ext: {
                 type: 'all',
             },
-            ui: 1,
+            ui: 2,
         },
         {
             name: '欧美',
             ext: {
                 type: 'europe',
             },
-            ui: 1,
+            ui: 2,
         },
         {
             name: '中字',
             ext: {
                 type: 'chinese',
             },
-            ui: 1,
+            ui: 2,
         },
         {
             name: '无码',
             ext: {
                 type: 'uncensored',
             },
-            ui: 1,
+            ui: 2,
         },
         {
             name: '有码',
             ext: {
                 type: 'censored',
             },
-            ui: 1,
+            ui: 2,
         },
     ],
 }
