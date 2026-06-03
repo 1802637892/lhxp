@@ -122,7 +122,7 @@ async function getTracks(ext) {
 async function getPlayinfo(ext) {
     ext = argsify(ext)
     const playUrl = ext.url
-$utils.toastInfo(url)
+$utils.toastInfo({ urls: [playUrl] })
     return jsonify({ urls: [playUrl] })
 }
 
