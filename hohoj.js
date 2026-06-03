@@ -13,21 +13,21 @@ let appConfig = {
             ext: {
                 type: 'all',
             },
-            ui: 2,
+            ui: 1,
         },
         {
             name: '欧美',
             ext: {
                 type: 'europe',
             },
-            ui: 2,
+            ui: 1,
         },
         {
             name: '中字',
             ext: {
                 type: 'chinese',
             },
-            ui: 2,
+            ui: 1,
         },
         {
             name: '无码',
@@ -41,7 +41,7 @@ let appConfig = {
             ext: {
                 type: 'censored',
             },
-            ui: 2,
+            ui: 1,
         },
     ],
 }
@@ -122,7 +122,6 @@ async function getTracks(ext) {
 async function getPlayinfo(ext) {
     ext = argsify(ext)
     const playUrl = ext.url
-$utils.toastInfo({ urls: [playUrl] })
     return jsonify({ urls: [playUrl] })
 }
 
