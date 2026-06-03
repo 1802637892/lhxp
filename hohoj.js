@@ -5,7 +5,7 @@ const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/6
 
 let appConfig = {
     ver: 1,
-    title: 'HOHOJ',
+    title: 'hohojs',
     site: 'https://hohoj.tv',
     tabs: [
         {
